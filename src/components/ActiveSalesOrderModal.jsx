@@ -38,11 +38,12 @@ const ActiveSalesOrderModal = ({ data }) => {
       setError("Selling price too high");
       return;
     }
-    if (+curProduct.quantity_in_inventory < formData.quantity) {
+    if (+formData.prevQty < formData.quantity) {
       setError("Not much in inventory");
       return;
     }
     const updatedSalesData = [...salesData];
+    console.log(updatedSalesData);
     updatedSalesData[correctProdIndex] = {
       ...updatedSalesData[correctProdIndex],
       coustomeName: formData.coustomeName,
@@ -122,8 +123,8 @@ const ActiveSalesOrderModal = ({ data }) => {
               <Flex justifyContent="space-between" gap="5px" marginBottom="4px">
                 <Box flexGrow="1">
                   <h1>
-                    Quantity(Available:
-                    {curProduct.quantity_in_inventory})
+                    Quantity(Total:{curProduct.prevQuantity} Used:
+                    {formData.quantity})
                   </h1>
                   <Input
                     onChange={formChangeHandler}

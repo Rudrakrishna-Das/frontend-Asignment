@@ -43,8 +43,12 @@ const SaleOrderModal = () => {
 
       const p = {};
       for (let i = 0; i < data.length; i++) {
-        p[data[i].name] = data[i].sku;
+        p[data[i].name] = data[i].sku.map((item) => ({
+          ...item,
+          prevQuantity: item.quantity_in_inventory,
+        }));
       }
+
       addProducts(p);
       setProductData(productNames);
     }
@@ -102,9 +106,21 @@ const SaleOrderModal = () => {
         setErrorQuantity(`For sku ${allprod} not have that much quantity`);
         return;
       }
-      allProductsData[allprod]["prevQty"] = correctProd.quantity_in_inventory;
-      correctProd.quantity_in_inventory -= +subData.quantity;
+      if (!allProductsData[allprod]["done"]) {
+        allProductsData[allprod]["prevQty"] = correctProd.quantity_in_inventory;
+        allProductsData[allprod]["done"] = true;
+        correctProd.quantity_in_inventory -= +subData.quantity;
+      }
     }
+
+    // for (const allprod in allProductsData) {
+    //   const subData = allProductsData[allprod];
+    //   const mainProd = allProducts[subData.mainProduct];
+    //   const correctProd = mainProd.find((p) => +p.id === +allprod);
+
+    //   allProductsData[allprod]["prevQty"] = correctProd.quantity_in_inventory;
+    //   correctProd.quantity_in_inventory -= +subData.quantity;
+    // }
     const orders = [];
     for (const prod in allProductsData) {
       orders.push({

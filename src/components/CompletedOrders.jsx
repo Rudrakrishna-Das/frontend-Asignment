@@ -49,7 +49,7 @@ const CompletedOrders = () => {
             </Table>
           </TableContainer>
         ) : (
-          <p>No active sales data</p>
+          <p>No one Paid</p>
         )}
       </Box>
     </>
