@@ -102,11 +102,16 @@ const SaleOrderModal = () => {
         setErrorQuantity(`For sku ${allprod} not have that much quantity`);
         return;
       }
+      allProductsData[allprod]["prevQty"] = correctProd.quantity_in_inventory;
       correctProd.quantity_in_inventory -= +subData.quantity;
     }
     const orders = [];
     for (const prod in allProductsData) {
-      orders.push({ ...allProductsData[prod], paid: "Not paid", id: prod });
+      orders.push({
+        ...allProductsData[prod],
+        paid: "Not paid",
+        id: prod,
+      });
     }
     addSalesData(orders);
     onClose();

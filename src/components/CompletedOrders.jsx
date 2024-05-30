@@ -10,15 +10,14 @@ import {
   TableContainer,
   Box,
 } from "@chakra-ui/react";
-import ActiveSalesOrderModal from "./ActiveSalesOrderModal";
 
-const ActiveSalesData = () => {
-  const { salesData } = useContext(UserContext);
+const CompletedOrders = () => {
+  const { paidData } = useContext(UserContext);
 
   return (
     <>
-      <Box w="95%" margin="6px auto">
-        {salesData && salesData.length > 0 ? (
+      <Box w="95%" margin="20px auto" padding="5px">
+        {paidData && paidData.length > 0 ? (
           <TableContainer>
             <Table variant="simple">
               <Thead>
@@ -31,11 +30,10 @@ const ActiveSalesData = () => {
                   <Th isNumeric>Total Price(₹)</Th>
                   <Th>Last Modified</Th>
                   <Th>Amount Paid</Th>
-                  <Th>Edit/view</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {salesData.map((data) => (
+                {paidData.map((data) => (
                   <Tr key={data.id}>
                     <Td>{data.id}</Td>
                     <Td>{data.coustomeName}</Td>
@@ -45,9 +43,6 @@ const ActiveSalesData = () => {
                     <Td isNumeric>{data.quantity * data.sellingPrice}</Td>
                     <Td>{data.lastModified}</Td>
                     <Td>{data.paid}</Td>
-                    <Td>
-                      <ActiveSalesOrderModal data={data} />
-                    </Td>
                   </Tr>
                 ))}
               </Tbody>
@@ -61,4 +56,4 @@ const ActiveSalesData = () => {
   );
 };
 
-export default ActiveSalesData;
+export default CompletedOrders;

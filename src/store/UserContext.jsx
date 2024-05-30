@@ -4,6 +4,8 @@ export const UserContext = createContext({
   user: false,
   allProducts: null,
   salesData: null,
+  paidData: null,
+  addPaidData: () => {},
   addProducts: () => {},
   addUser: () => {},
   removeUser: () => {},
@@ -14,6 +16,7 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState(false);
   const [allProducts, setAllProducts] = useState(null);
   const [salesData, setSalesData] = useState(null);
+  const [paidData, setPaidData] = useState(null);
   const addUser = () => {
     setUser("User");
   };
@@ -27,12 +30,17 @@ const UserProvider = ({ children }) => {
   const addSalesData = (data) => {
     setSalesData(data);
   };
+  const addPaidData = (data) => {
+    setPaidData(data);
+  };
 
   const ctxValue = {
     user,
     allProducts,
     salesData,
+    paidData,
     addSalesData,
+    addPaidData,
     addProducts,
     addUser,
     removeUser,

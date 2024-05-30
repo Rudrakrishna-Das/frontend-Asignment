@@ -14,11 +14,13 @@ import {
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { UserContext } from "../store/UserContext";
+
 const ActiveSalesOrderModal = ({ data }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { salesData, allProducts, addSalesData } = useContext(UserContext);
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState(data);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { salesData, allProducts, addSalesData, addPaidData } =
+    useContext(UserContext);
 
   const formChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -49,10 +51,23 @@ const ActiveSalesOrderModal = ({ data }) => {
       paid: formData.paid,
     };
 
+    const indexallProducts = allProducts[formData.mainProduct].findIndex(
+      (item) => item.id === +formData.id
+    );
+
+    allProducts[formData.mainProduct][indexallProducts].quantity_in_inventory =
+      +formData.prevQty - +formData.quantity;
+    const paidData = [];
+    for (let i = 0; i < updatedSalesData.length; i++) {
+      if (updatedSalesData[i].paid.toLowerCase() === "paid") {
+        paidData.push(...updatedSalesData.splice(i, 1));
+      }
+    }
+    addPaidData(paidData);
     addSalesData(updatedSalesData);
     onClose();
   };
-  console.log("activesales modal component", salesData);
+
   return (
     <>
       <Button
@@ -108,9 +123,7 @@ const ActiveSalesOrderModal = ({ data }) => {
                 <Box flexGrow="1">
                   <h1>
                     Quantity(Available:
-                    {curProduct.quantity_in_inventory -
-                      salesData[correctProdIndex].quantity}
-                    )
+                    {curProduct.quantity_in_inventory})
                   </h1>
                   <Input
                     onChange={formChangeHandler}
